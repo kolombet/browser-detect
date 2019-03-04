@@ -1,0 +1,48 @@
+<html>
+<body>
+    <div id="bro-name"></div>
+</body>
+<script>
+    function GetBrowserNameVersion() {
+	var browsers = {
+		Firefox: !!window.InstallTrigger,
+		Safari: !!window.ApplePaySession,
+		Opera: window.opr && !!window.opr.addons,
+		Yandex: !!window.yandex,
+		Edge: !!window.StyleMedia,
+		Chrome: window.chrome && !this.Opera && !this.Yandex && !this.Edge && !this.Firefox && !this.Safari
+	};
+
+	var userAgents = {
+		Firefox: /Firefox\/([0-9]+)\./,
+		Safari: / Safari\/([0-9]+)\./,
+		Opera: / OPR\/([0-9]+)\./,
+		Yandex: /YaBrowser\/([0-9]+)\./,
+		Chrome: /Chrome\/([0-9]+)\./,
+		Edge: /Edge\/([0-9]+)\./
+	};
+
+	var match = function match(userAgentRegex) {
+		return window.navigator.userAgent.match(userAgentRegex);
+	};
+
+	var getVersion = function getVersion(match) {
+		return match ? parseInt(match[1]) : 0;
+	};
+
+	var check = function check(browser) {
+		return browsers[browser] === true && !!match(userAgents[browser]);
+	};
+
+	var detect = function detect() {
+		return Object.keys(browsers).find(check);
+	};
+
+	var browser = detect();
+	var version = getVersion(match(userAgents[browser]));
+	return browser + " " + version;
+}
+document.getElementById("bro-name").innerHTML = GetBrowserNameVersion();
+</script>
+
+</html>
